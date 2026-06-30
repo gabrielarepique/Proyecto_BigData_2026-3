@@ -1,46 +1,49 @@
 #include <Servo.h>
 
-const int RED_LED_PIN   = 8;   
-const int GREEN_LED_PIN = 9;   
-const int SERVO_PIN     = 10;  
+Servo miServo;
 
-const int SERVO_ANGLE_OBJECT   = 90;  
-const int SERVO_ANGLE_NO_OBJECT = 0;  
+// Pines LED RGB
+const int rojo = 9;
+const int verde = 10;
+const int azul = 11;
 
-Servo myServo;
+// Posición inicial del servo
+int posicion = 90;
 
 void setup() {
-  Serial.begin(9600);
+  // Configurar LED RGB
+  pinMode(rojo, OUTPUT);
+  pinMode(verde, OUTPUT);
+  pinMode(azul, OUTPUT);
 
-  pinMode(RED_LED_PIN, OUTPUT);
-  pinMode(GREEN_LED_PIN, OUTPUT);
-
-  myServo.attach(SERVO_PIN);
-
-  digitalWrite(RED_LED_PIN, HIGH);
-  digitalWrite(GREEN_LED_PIN, LOW);
-  myServo.write(SERVO_ANGLE_NO_OBJECT);
+  // Configurar servo
+  miServo.attach(6);
+  miServo.write(90);
 }
 
 void loop() {
 
-  if (Serial.available() > 0) {
-    char command = Serial.read();
+  // ROJO + Servo a 90°
+  digitalWrite(rojo, HIGH);
+  digitalWrite(verde, LOW);
+  digitalWrite(azul, LOW);
 
-    while (Serial.available() > 0) {
-      Serial.read();
-    }
+  miServo.write(90);
+  delay(2000);
 
-    if (command == 'A') {
-      digitalWrite(GREEN_LED_PIN, HIGH);
-      digitalWrite(RED_LED_PIN, LOW);
-      myServo.write(SERVO_ANGLE_OBJECT);
-    } 
-    else if (command == 'B') {
+  // AZUL + Servo a 180°
+  digitalWrite(rojo, LOW);
+  digitalWrite(verde, LOW);
+  digitalWrite(azul, HIGH);
 
-      digitalWrite(RED_LED_PIN, HIGH);
-      digitalWrite(GREEN_LED_PIN, LOW);
-      myServo.write(SERVO_ANGLE_NO_OBJECT);
-    }
-  }
+  miServo.write(180);
+  delay(2000);
+
+  // VERDE + Servo a 90°
+  digitalWrite(rojo, LOW);
+  digitalWrite(verde, HIGH);
+  digitalWrite(azul, LOW);
+
+  miServo.write(90);
+  delay(2000);
 }
